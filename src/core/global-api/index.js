@@ -33,13 +33,25 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // exposed util methods.
   // NOTE: these are not considered part of the public API - avoid relying on
   // them unless you are aware of the risk.
+  // 这些工具方法不视作全局API的一部分，除非你已经意识到某些风险，否则不要去依赖他们
   Vue.util = {
     warn,
     extend,
     mergeOptions,
     defineReactive
   }
-
+  // 这里定义全局属性
+  // Vue.extend----------------使用基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象。
+  // Vue.nextTick-------------在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM
+  // Vue.set----------------向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新属性，因为 Vue 无法探测普通的新增属性 
+  // Vue.delete---------------- 删除对象的属性。如果对象是响应式的，确保删除能触发更新视图。这个方法主要用于避开 Vue 不能检测到属性被删除的限制，但是你应该很少会使用它。
+  // Vue.directive----------注册或获取全局指令。
+  // Vue.filter---------------- 注册或获取全局过滤器。
+  // Vue.component-----------注册或获取全局组件。注册还会自动使用给定的id设置组件的名称
+  // Vue.use----------------    安装 Vue.js 插件。如果插件是一个对象，必须提供 install 方法。如果插件是一个函数，它会被作为 install 方法。install 方法调用时，会将 Vue 作为参数传入。
+  // Vue.mixin----------------  全局注册一个混入，影响注册之后所有创建的每个 Vue 实例。插件作者可以使用混入，向组件注入自定义的行为。不推荐在应用代码中使用。
+  // Vue.compile----------------在 render 函数中编译模板字符串。只在独立构建时有效
+  // Vue.version----------------细节：提供字符串形式的 Vue 安装版本号。这对社区的插件和组件来说非常有用，你可以根据不同的版本号采取不同的策略。
   Vue.set = set
   Vue.delete = del
   Vue.nextTick = nextTick
@@ -56,6 +68,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   extend(Vue.options.components, builtInComponents)
 
   initUse(Vue)
+
   initMixin(Vue)
   initExtend(Vue)
   initAssetRegisters(Vue)
