@@ -197,6 +197,7 @@ export function defineReactive (
  * Set a property on an object. Adds the new property and
  * triggers change notification if the property doesn't
  * already exist.
+ * 在对象上设置属性  添加新属性并在属性尚不存在时触发更改通知。
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
   if (process.env.NODE_ENV !== 'production' &&
@@ -209,6 +210,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target.splice(key, 1, val)
     return val
   }
+  // 属性key在目标对象上 且不属于原生对象
   if (key in target && !(key in Object.prototype)) {
     target[key] = val
     return val
