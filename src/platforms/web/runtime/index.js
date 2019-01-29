@@ -18,8 +18,8 @@ import {
 import { patch } from './patch'
 import platformDirectives from './directives/index'
 import platformComponents from './components/index'
-debugger
-console.log('debugger')
+// debugger
+// console.log('debugger')
     // install platform specific utils
 Vue.config.mustUseProp = mustUseProp
 Vue.config.isReservedTag = isReservedTag

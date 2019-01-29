@@ -29,7 +29,7 @@ export function initMixin(Vue: Class < Component > ) {
 
         // a flag to avoid this being observed
         vm._isVue = true
-        debugger
+        // debugger
             // merge options
         if (options && options._isComponent) {
             // optimize internal component instantiation
@@ -50,7 +50,7 @@ export function initMixin(Vue: Class < Component > ) {
             vm._renderProxy = vm
         }
         // expose real self
-        debugger
+        // debugger
         vm._self = vm
         initLifecycle(vm) //初始化声明周期
         initEvents(vm) //事件
@@ -60,7 +60,7 @@ export function initMixin(Vue: Class < Component > ) {
         initState(vm)
         initProvide(vm) // resolve provide after data/props
         callHook(vm, 'created')
-        debugger
+        // debugger
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
             vm._name = formatComponentName(vm, false)

@@ -97,12 +97,18 @@ export default class Watcher {
 
   /**
    * Evaluate the getter, and re-collect dependencies.
+   * 评估getter，并重新收集依赖项。
    */
   get () {
+    // 放入 dep的 订阅者
     pushTarget(this)
     let value
     const vm = this.vm
+
     try {
+      // ?
+      // 这实际上就是执行了计算属性定义的回调函数，过程中一旦去取已定义的响应式属性，
+      // 当前Watcher( Dep.target)便会订阅该属性(这时Watcher是computed Watcher，属性对应dep实例内就会加入当前Watcher)
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {
@@ -124,6 +130,7 @@ export default class Watcher {
 
   /**
    * Add a dependency to this directive.
+   * 为此指令添加依赖项。
    */
   addDep (dep: Dep) {
     const id = dep.id
@@ -161,7 +168,7 @@ export default class Watcher {
    * Subscriber interface.
    * Will be called when a dependency changes.
    */
-  update () {
+  update () {    //watcher作为订阅者的update方法
     /* istanbul ignore else */
     if (this.lazy) {
       this.dirty = true

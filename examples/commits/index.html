@@ -37,6 +37,7 @@
           name="branch"
           v-model="currentBranch">
         <label :for="branch">{{ branch }}</label>
+        <p>{{obj&&obj.name}}</p>
       </template>
         <p>vuejs/vue@{{ currentBranch }}</p>
         <ul>

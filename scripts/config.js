@@ -202,8 +202,8 @@ function genConfig(name) {
             'process.env.NODE_ENV': JSON.stringify(opts.env)
         }))
     }
-    console.log(config)
-    console.log(config)
+    // console.log(config)
+    // console.log(config)
 
     Object.defineProperty(config, '_name', {
         enumerable: false,

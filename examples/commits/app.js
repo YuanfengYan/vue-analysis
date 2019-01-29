@@ -13,7 +13,8 @@ new Vue({
   data: {
     branches: ['master', 'dev'],
     currentBranch: 'master',
-    commits: null
+    commits: null,
+    obj:{},
   },
 
   created: function () {
@@ -36,7 +37,14 @@ new Vue({
 
   methods: {
     fetchData: function () {
+      this.$set(this.obj,'name',this.currentBranch)
+      // console.log(this.obj)
+      this.obj.name=123
       var self = this
+      Vue.use({install:(Vue,options)=>{
+        console.log('Vue---', Vue)
+        console.log('options---',options)
+      }},'vue install option val')
       if (navigator.userAgent.indexOf('PhantomJS') > -1) {
         // use mocks in e2e to avoid dependency on network / authentication
         setTimeout(function () {
@@ -47,7 +55,7 @@ new Vue({
         xhr.open('GET', apiURL + self.currentBranch)
         xhr.onload = function () {
           self.commits = JSON.parse(xhr.responseText)
-          console.log(self.commits[0].html_url)
+          // console.log(self.commits[0].html_url)
         }
         xhr.send()
       }

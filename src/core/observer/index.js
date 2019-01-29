@@ -106,6 +106,7 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
+ * 创造观察者实例
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
@@ -131,6 +132,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
 
 /**
  * Define a reactive property on an Object.
+ * 
  */
 export function defineReactive (
   obj: Object,
@@ -152,14 +154,17 @@ export function defineReactive (
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-
-  let childOb = !shallow && observe(val)
+  // shallow浅拷贝 
+  let childOb = !shallow && observe(val) //深度观察 
+  // 这里开始转换 data 的 getter setter，原始值已存入到 __ob__ 属性中
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
-      if (Dep.target) {
+       // 判断是否处于依赖收集状态
+      if (Dep.target) { 
+         // 建立依赖关系
         dep.depend()
         if (childOb) {
           childOb.dep.depend()
@@ -188,6 +193,7 @@ export function defineReactive (
         val = newVal
       }
       childOb = !shallow && observe(newVal)
+      // 依赖发生变化，通知到计算属性重新计算
       dep.notify()
     }
   })
@@ -200,6 +206,7 @@ export function defineReactive (
  * 在对象上设置属性  添加新属性并在属性尚不存在时触发更改通知。
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
+  console.log('this.$set')
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
@@ -215,7 +222,9 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target[key] = val
     return val
   }
+  //vue给响应式对象都加了一个__ob__属性，如果一个对象有这个__ob__属性，那么就说明这个对象是响应式对象，我们修改对象已有属性的时候就会触发页面渲染
   const ob = (target: any).__ob__
+  // 当前的target对象是vue实例对象或者是根数据对象，那么就会抛出错误警告
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
@@ -223,10 +232,12 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     )
     return val
   }
+  // 为真说明当前的target对象不是响应式对象，那么直接赋值返回即可
   if (!ob) {
     target[key] = val
     return val
   }
+  // 真正处理对象的地方--给新加的属性添加依赖，以后再直接修改这个新的属性的时候就会触发页面渲染。
   defineReactive(ob.value, key, val)
   ob.dep.notify()
   return val

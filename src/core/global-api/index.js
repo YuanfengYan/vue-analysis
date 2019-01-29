@@ -57,16 +57,25 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   Vue.nextTick = nextTick
 
   Vue.options = Object.create(null)
+  console.log(ASSET_TYPES)
+  //  'component',
+  // 'directive',
+  // 'filter'
+  console.log(Vue.options)
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
+  console.log(JSON.stringify(Vue.options.components))
 
   // this is used to identify the "base" constructor to extend all plain-object
   // components with in Weex's multi-instance scenarios.
   Vue.options._base = Vue
 
+// 将属性混合到目标对象中。//builtInComponents=>KeepAlive  内置全局组件
+
   extend(Vue.options.components, builtInComponents)
 
+  // console.log(JSON.stringify(Vue.options.components))
   initUse(Vue)
 
   initMixin(Vue)
