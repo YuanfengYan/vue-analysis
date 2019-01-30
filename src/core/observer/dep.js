@@ -11,13 +11,15 @@ let uid = 0
  * directives subscribing to it.
  */
 export default class Dep {
-  //共享数据 target id subs
+  //共享数据 target id subs 类的静态属性
   static target: ?Watcher;
   id: number;
   subs: Array<Watcher>;
 
   constructor () {
+    //  用来给每个订阅者 Watcher 做唯一标识符，防止重复收集
     this.id = uid++
+    // 定义subs数组，用来做依赖收集(收集所有的订阅者 Watcher)
     this.subs = []
   }
 

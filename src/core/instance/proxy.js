@@ -2,6 +2,7 @@
 
 import config from 'core/config'
 import { warn, makeMap, isNative } from '../util/index'
+// makeMap(map)(key) 返回一个function检查 是否key值在map中
 
 let initProxy
 
@@ -51,15 +52,18 @@ if (process.env.NODE_ENV !== 'production') {
       }
     })
   }
-
+// 支持Proxy 执行代理回调的函数
   const hasHandler = {
+    // has()方法用来拦截HasProperty操作，即判断对象具有某个属性时对象会生效。典型的操作就是in运算符。
     has (target, key) {
-      const has = key in target
-      const isAllowed = allowedGlobals(key) ||
+      // if(key=='__name')
+      // debugger
+      const has = key in target //是否有key对应的属性
+      const isAllowed = allowedGlobals(key) || //allowedGlobals=>关键字，或者以"_"开头、熟悉不在$data中的属性名不进行
         (typeof key === 'string' && key.charAt(0) === '_' && !(key in target.$data))
       if (!has && !isAllowed) {
-        if (key in target.$data) warnReservedPrefix(target, key)
-        else warnNonPresent(target, key)
+        if (key in target.$data) warnReservedPrefix(target, key)//不能以_或者$个data下的属性命名
+        else warnNonPresent(target, key)//未定义
       }
       return has || !isAllowed
     }
@@ -76,15 +80,18 @@ if (process.env.NODE_ENV !== 'production') {
   }
 
   initProxy = function initProxy (vm) {
-    if (hasProxy) {
+    if (hasProxy) { //浏览器支持Proxy
       // determine which proxy handler to use
       const options = vm.$options
+      // debugger
+      // 默认都会走hasHander 因为_withStripped一般是undefined，
+      // 
       const handlers = options.render && options.render._withStripped
         ? getHandler
         : hasHandler
       vm._renderProxy = new Proxy(vm, handlers)
     } else {
-      vm._renderProxy = vm
+      vm._renderProxy = vm //不进行代理
     }
   }
 }

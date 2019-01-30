@@ -94,10 +94,11 @@ export function toNumber (val: string): number | string {
 /**
  * Make a map and return a function for checking if a key
  * is in that map.
+ * makeMap(map)(key) 返回一个function检查 是否key值在map中
  */
 export function makeMap (
   str: string,
-  expectsLowerCase?: boolean
+  expectsLowerCase?: boolean //默认区分大小写
 ): (key: string) => true | void {
   const map = Object.create(null)
   const list: Array<string> = str.split(',')

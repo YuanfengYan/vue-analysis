@@ -15,12 +15,15 @@ new Vue({
     currentBranch: 'master',
     commits: null,
     obj:{},
+    __name:123,
   },
-
+// render:(h, ctx) => {
+//   return h('div',{},'xxxx')
+// },
   created: function () {
     this.fetchData()
   },
-
+  
   watch: {
     currentBranch: 'fetchData'
   },
@@ -38,7 +41,7 @@ new Vue({
   methods: {
     fetchData: function () {
       this.$set(this.obj,'name',this.currentBranch)
-      // console.log(this.obj)
+      console.log(this.$children)
       this.obj.name=123
       var self = this
       Vue.use({install:(Vue,options)=>{

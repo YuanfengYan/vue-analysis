@@ -31,8 +31,9 @@ export function setActiveInstance(vm: Component) {
 
 export function initLifecycle (vm: Component) {
   const options = vm.$options
-
+  debugger
   // locate first non-abstract parent
+  // 找到第一个非抽象父级 顶级
   let parent = options.parent
   if (parent && !options.abstract) {
     while (parent.$options.abstract && parent.$parent) {
@@ -40,7 +41,7 @@ export function initLifecycle (vm: Component) {
     }
     parent.$children.push(vm)
   }
-
+  // 顶级parent
   vm.$parent = parent
   vm.$root = parent ? parent.$root : vm
 

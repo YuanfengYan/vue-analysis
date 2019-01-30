@@ -38,12 +38,13 @@ export function initMixin(Vue: Class < Component > ) {
             initInternalComponent(vm, options)
         } else {
             vm.$options = mergeOptions(
-                resolveConstructorOptions(vm.constructor),
+                resolveConstructorOptions(vm.constructor), //构造函数的options 详见global-api->index.js 配置了基础的3个options :filters,componemts,directives
                 options || {},
                 vm
             )
         }
         /* istanbul ignore else */
+        //如果是在开发环境，代理data下的变量，避免一些错误的命名
         if (process.env.NODE_ENV !== 'production') {
             initProxy(vm)
         } else {

@@ -58,14 +58,14 @@ export function initGlobalAPI (Vue: GlobalAPI) {
 
   Vue.options = Object.create(null)
   console.log(ASSET_TYPES)
-  //  'component',
+  // 'component',
   // 'directive',
   // 'filter'
   console.log(Vue.options)
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
-  console.log(JSON.stringify(Vue.options.components))
+  // console.log(JSON.stringify(Vue.options.components))
 
   // this is used to identify the "base" constructor to extend all plain-object
   // components with in Weex's multi-instance scenarios.
@@ -75,10 +75,15 @@ export function initGlobalAPI (Vue: GlobalAPI) {
 
   extend(Vue.options.components, builtInComponents)
 
-  // console.log(JSON.stringify(Vue.options.components))
+  // Vue.use 的注册，用于扩展vue插件 
   initUse(Vue)
-
+  // Vue.mixin的注册 ，用于混入mixin
   initMixin(Vue)
+  // Vue.extend的注册 
   initExtend(Vue)
+  // 注册
+  // 'component',
+  // 'directive',
+  // 'filter'
   initAssetRegisters(Vue)
 }
