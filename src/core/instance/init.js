@@ -18,7 +18,7 @@ export function initMixin(Vue: Class < Component > ) {
         const vm: Component = this
             // a uid
         vm._uid = uid++
-
+        console.log(vm._uid)
             let startTag, endTag
                 /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -30,20 +30,25 @@ export function initMixin(Vue: Class < Component > ) {
         // a flag to avoid this being observed
         vm._isVue = true
         // debugger
-            // merge options
+            // merge options第一步： options参数的处理
         if (options && options._isComponent) {
             // optimize internal component instantiation
             // since dynamic options merging is pretty slow, and none of the
             // internal component options needs special treatment.
             initInternalComponent(vm, options)
         } else {
+            // 父组件构造器上的options
+            // 父组件实例上的options
+            // 当前组件构造器上的options
+            // 当前组件实例化传入的options
+            debugger
             vm.$options = mergeOptions(
                 resolveConstructorOptions(vm.constructor), //构造函数的options 详见global-api->index.js 配置了基础的3个options :filters,componemts,directives
                 options || {},
                 vm
             )
         }
-        /* istanbul ignore else */
+        /* istanbul ignore else 第二步：renderProxy */
         //如果是在开发环境，代理data下的变量，避免一些错误的命名
         if (process.env.NODE_ENV !== 'production') {
             initProxy(vm)
@@ -53,12 +58,12 @@ export function initMixin(Vue: Class < Component > ) {
         // expose real self
         // debugger
         vm._self = vm
-        initLifecycle(vm) //初始化声明周期
-        initEvents(vm) //事件
-        initRender(vm) //
+        initLifecycle(vm) //第三步：vm的生命周期相关变量初始化 --相关的属性
+        initEvents(vm) //第四步：vm的事件监听初始化
+        initRender(vm) //第五步： render
         callHook(vm, 'beforeCreate')
         initInjections(vm) // resolve injections before data/props
-        initState(vm)
+        initState(vm) //第六步：vm的状态初始化，prop/data/computed/method/watch都在这里完成初始化
         initProvide(vm) // resolve provide after data/props
         callHook(vm, 'created')
         // debugger
@@ -77,7 +82,7 @@ export function initMixin(Vue: Class < Component > ) {
 
 export function initInternalComponent(vm: Component, options: InternalComponentOptions) {
     const opts = vm.$options = Object.create(vm.constructor.options)
-        // doing this because it's faster than dynamic enumeration.
+        // doing this because it's faster than dynamic enumeration.做这些是因为它比动态计数要快
     const parentVnode = options._parentVnode
     opts.parent = options.parent
     opts._parentVnode = parentVnode
@@ -96,10 +101,12 @@ export function initInternalComponent(vm: Component, options: InternalComponentO
 
 export function resolveConstructorOptions(Ctor: Class < Component > ) {
     let options = Ctor.options
+    // console.log(options)
     if (Ctor.super) {
-        const superOptions = resolveConstructorOptions(Ctor.super)
-        const cachedSuperOptions = Ctor.superOptions
-        if (superOptions !== cachedSuperOptions) {
+        // debugger
+        const superOptions = resolveConstructorOptions(Ctor.super) // 获取父级的options
+        const cachedSuperOptions = Ctor.superOptions // 获取父级缓存的options
+        if (superOptions !== cachedSuperOptions) {// 如果父级options有变化
             // super option changed,
             // need to resolve new options.
             Ctor.superOptions = superOptions

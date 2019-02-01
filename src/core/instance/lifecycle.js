@@ -31,9 +31,9 @@ export function setActiveInstance(vm: Component) {
 
 export function initLifecycle (vm: Component) {
   const options = vm.$options
-  debugger
+  // debugger
   // locate first non-abstract parent
-  // 找到第一个非抽象父级 顶级
+  // 找到第一个非抽象父级 顶级 （抽象元素是指自身不会渲染出一个dom）
   let parent = options.parent
   if (parent && !options.abstract) {
     while (parent.$options.abstract && parent.$parent) {

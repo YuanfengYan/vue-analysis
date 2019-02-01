@@ -5,7 +5,8 @@ Vue.component('demo-grid', {
   props: {
     data: Array,
     columns: Array,
-    filterKey: String
+    filterKey: String,
+    name:123,
   },
   data: function () {
     var sortOrders = {}
@@ -47,6 +48,7 @@ Vue.component('demo-grid', {
   },
   methods: {
     sortBy: function (key) {
+      console.log(this.$attrs)
       this.sortKey = key
       this.sortOrders[key] = this.sortOrders[key] * -1
     }
@@ -57,6 +59,7 @@ Vue.component('demo-grid', {
 var demo = new Vue({
   el: '#demo',
   data: {
+    name:123,
     searchQuery: '',
     gridColumns: ['name', 'power'],
     gridData: [

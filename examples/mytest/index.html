@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vue.js github commits example</title>
+    <style>
+        #demo {
+            font-family: 'Helvetica', Arial, sans-serif;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #f66;
+        }
+        
+        li {
+            line-height: 1.5em;
+            margin-bottom: 20px;
+        }
+        
+        .author,
+        .date {
+            font-weight: bold;
+        }
+    </style>
+    <!-- Delete ".min" for console warnings in development -->
+    <!-- <script src="../../dist/vue.js"></script> -->
+    <script src="../../dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="demo">
+        <h1>my-test</h1>
+        <input type="text" v-model="currentBranch">
+        {{name}}
+        <component-a :name="name" :age="age"></component-a>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

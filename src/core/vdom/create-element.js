@@ -25,14 +25,17 @@ const ALWAYS_NORMALIZE = 2
 
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
+// 包装函数，用于提供更灵活的界面
+//没有被流量吼叫
 export function createElement (
-  context: Component,
-  tag: any,
-  data: any,
-  children: any,
+  context: Component,// 上下文 默认vm实例 (vm.$createElement调用时)
+  tag: any, // 标签
+  data: any,// 数据对象   (hook, on , pendingInsert)
+  children: any,   // 子节点 （位置）
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
+  // 参数判断，不传data时,要把children,normalizationType参数往前移
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -51,23 +54,23 @@ export function _createElement (
   children?: any,
   normalizationType?: number
 ): VNode | Array<VNode> {
-  if (isDef(data) && isDef((data: any).__ob__)) {
+  if (isDef(data) && isDef((data: any).__ob__)) {//判断是否是响应式的 
     process.env.NODE_ENV !== 'production' && warn(
-      `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +
+      `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` + //避免将观察到的数据对象用作vnode数据
       'Always create fresh vnode data objects in each render!',
       context
     )
     return createEmptyVNode()
   }
-  // object syntax in v-bind
+  // object syntax in v-bind v-bind中的对象语法
   if (isDef(data) && isDef(data.is)) {
     tag = data.is
   }
   if (!tag) {
-    // in case of component :is set to falsy value
+    // in case of component :is set to falsy value 在组件的情况下：设置为假值
     return createEmptyVNode()
   }
-  // warn against non-primitive key
+  // warn against non-primitive key 警告非原始key
   if (process.env.NODE_ENV !== 'production' &&
     isDef(data) && isDef(data.key) && !isPrimitive(data.key)
   ) {
@@ -80,6 +83,7 @@ export function _createElement (
     }
   }
   // support single function children as default scoped slot
+  // 支持单个函数children作为默认的作用域槽----？
   if (Array.isArray(children) &&
     typeof children[0] === 'function'
   ) {
