@@ -61,6 +61,8 @@ export function eventsMixin (Vue: Class<Component>) {
       (vm._events[event] || (vm._events[event] = [])).push(fn)
       // optimize hook:event cost by using a boolean flag marked at registration
       // instead of a hash lookup
+      // debugger
+      /*这里在注册事件的时候标记bool值也就是个标志位来表明存在钩子，而不需要通过哈希表的方法来查找是否有钩子，这样做可以减少不必要的开销，优化性能。*/
       if (hookRE.test(event)) {
         vm._hasHookEvent = true
       }

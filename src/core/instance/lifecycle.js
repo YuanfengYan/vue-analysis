@@ -322,6 +322,8 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
 
 export function callHook (vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
+  // debugger
+  console.log(hook)
   pushTarget()
   const handlers = vm.$options[hook]
   if (handlers) {

@@ -35,8 +35,10 @@ const sharedPropertyDefinition = {
   set: noop
 }
 
+// 代理属性的访问 vm[key]==>vm._data.key <== fn(vm,'_data',key)
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
+    // console.log('get -',sourceKey,key)
     return this[sourceKey][key]
   }
   sharedPropertyDefinition.set = function proxySetter (val) {
@@ -46,22 +48,32 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 }
 
 export function initState (vm: Component) {
+  debugger
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
-  if (opts.data) {
+  if (opts.data) {//初始化data数据  数据劫持 
     initData(vm)
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
-  if (opts.computed) initComputed(vm, opts.computed)
-  if (opts.watch && opts.watch !== nativeWatch) {
+  if (opts.computed) initComputed(vm, opts.computed) //计算属性
+  if (opts.watch && opts.watch !== nativeWatch) {//watcher监听
     initWatch(vm, opts.watch)
   }
 }
 
+/**
+ * 
+ * @param {*} vm 
+ * @param {*} propsOptions 
+ * 1·把所有 prop 的 key 另存在 options 的 _propKeys 中。
+ * 2对于每一个 prop，将其 key 添加到 _propKeys 中，获取其 value，并执行 defineReactive 函数。（不了解的可以看上一节）
+ * 3对于每一个 prop, 调用 proxy 函数在 Vue 对象上建立一个该值的引用。
+ */
 function initProps (vm: Component, propsOptions: Object) {
+  
   const propsData = vm.$options.propsData || {}
   const props = vm._props = {}
   // cache prop keys so that future props updates can iterate using Array
@@ -114,7 +126,7 @@ function initData (vm: Component) {
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
-  if (!isPlainObject(data)) {
+  if (!isPlainObject(data)) { //是不是对象类型
     data = {}
     process.env.NODE_ENV !== 'production' && warn(
       'data functions should return an object:\n' +
@@ -130,6 +142,7 @@ function initData (vm: Component) {
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
+      // 方法名和变量名是否重名
       if (methods && hasOwn(methods, key)) {
         warn(
           `Method "${key}" has already been defined as a data property.`,
@@ -137,13 +150,14 @@ function initData (vm: Component) {
         )
       }
     }
+    // 父组件传入的props是否和data变量名重名
     if (props && hasOwn(props, key)) {
       process.env.NODE_ENV !== 'production' && warn(
         `The data property "${key}" is already declared as a prop. ` +
         `Use prop default value instead.`,
         vm
       )
-    } else if (!isReserved(key)) {
+    } else if (!isReserved(key)) {//检查是否以 $ or _开头的
       proxy(vm, `_data`, key)
     }
   }
@@ -286,7 +300,11 @@ function initMethods (vm: Component, methods: Object) {
     vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
   }
 }
-
+/**
+ * 数据监听
+ * @param {*} vm 
+ * @param {*} watch 
+ */
 function initWatch (vm: Component, watch: Object) {
   for (const key in watch) {
     const handler = watch[key]

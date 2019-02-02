@@ -41,7 +41,7 @@ export function initMixin(Vue: Class < Component > ) {
             // 父组件实例上的options
             // 当前组件构造器上的options
             // 当前组件实例化传入的options
-            debugger
+            // debugger
             vm.$options = mergeOptions(
                 resolveConstructorOptions(vm.constructor), //构造函数的options 详见global-api->index.js 配置了基础的3个options :filters,componemts,directives
                 options || {},
@@ -60,9 +60,9 @@ export function initMixin(Vue: Class < Component > ) {
         vm._self = vm
         initLifecycle(vm) //第三步：vm的生命周期相关变量初始化 --相关的属性
         initEvents(vm) //第四步：vm的事件监听初始化
-        initRender(vm) //第五步： render
-        callHook(vm, 'beforeCreate')
-        initInjections(vm) // resolve injections before data/props
+        initRender(vm) //第五步： render 初始化$scopedSlots $slots ._c $createElement $createElement $listeners 
+        callHook(vm, 'beforeCreate') //执行钩子，hook:
+        initInjections(vm) // resolve injections before data/props provide / inject
         initState(vm) //第六步：vm的状态初始化，prop/data/computed/method/watch都在这里完成初始化
         initProvide(vm) // resolve provide after data/props
         callHook(vm, 'created')

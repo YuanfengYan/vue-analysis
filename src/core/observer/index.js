@@ -21,6 +21,8 @@ const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 /**
  * In some cases we may want to disable observation inside a component's
  * update computation.
+ * 在某些情况下，我们可能希望禁用组件内部的观察
+ * 更新计算。
  */
 export let shouldObserve: boolean = true
 
@@ -33,6 +35,7 @@ export function toggleObserving (value: boolean) {
  * object. Once attached, the observer converts the target
  * object's property keys into getter/setters that
  * collect dependencies and dispatch updates.
+ * 每个监听对象在Observer里面被监听, 对象属性进入 getter setter方法后, 会收集依赖项 和 触发更新也的回调方法
  */
 export class Observer {
   value: any;
@@ -116,12 +119,13 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
-    shouldObserve &&
-    !isServerRendering() &&
-    (Array.isArray(value) || isPlainObject(value)) &&
-    Object.isExtensible(value) &&
-    !value._isVue
+    shouldObserve && //是否是可设置观察
+    !isServerRendering() &&//是否是服务端渲染
+    (Array.isArray(value) || isPlainObject(value)) && //是否是数组或对象
+     Object.isExtensible(value) && //isExtensible判断对象是否是可扩展的
+    !value._isVue 
   ) {
+    // 创造观察者实例
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -143,6 +147,7 @@ export function defineReactive (
 ) {
   const dep = new Dep()
 
+  // 查询是否是可配置属性 
   const property = Object.getOwnPropertyDescriptor(obj, key)
   if (property && property.configurable === false) {
     return
@@ -154,7 +159,7 @@ export function defineReactive (
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-  // shallow浅拷贝 
+  // shallow浅
   let childOb = !shallow && observe(val) //深度观察 
   // 这里开始转换 data 的 getter setter，原始值已存入到 __ob__ 属性中
   Object.defineProperty(obj, key, {
@@ -162,7 +167,7 @@ export function defineReactive (
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
-       // 判断是否处于依赖收集状态
+       // 判断是否处于依赖收集状态 是否需要添加订阅者
       if (Dep.target) { 
          // 建立依赖关系
         dep.depend()

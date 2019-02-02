@@ -12,7 +12,10 @@ export function initProvide (vm: Component) {
       : provide
   }
 }
-
+/**
+ *  首先通过 resolveInject 方法获取 inject 选项搜索结果，如果有搜索结果，遍历搜索结果并为其中的数据添加 setter 和 getter
+ * @param {*} vm 
+ */
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
   if (result) {
@@ -35,11 +38,12 @@ export function initInjections (vm: Component) {
     toggleObserving(true)
   }
 }
-
 export function resolveInject (inject: any, vm: Component): ?Object {
   if (inject) {
+    // inject 是 :any 类型因为流没有智能到能够指出缓存
     // inject is :any because flow is not smart enough to figure out cached
     const result = Object.create(null)
+    // 获取 inject 选项的 key 数组
     const keys = hasSymbol
       ? Reflect.ownKeys(inject).filter(key => {
         /* istanbul ignore next */

@@ -41,7 +41,7 @@ export default class Watcher {
   before: ?Function;
   getter: Function;
   value: any;
-
+  debugger
   constructor (
     vm: Component,
     expOrFn: string | Function,
@@ -101,6 +101,7 @@ export default class Watcher {
    */
   get () {
     // 放入 dep的 订阅者
+    debugger
     pushTarget(this)
     let value
     const vm = this.vm

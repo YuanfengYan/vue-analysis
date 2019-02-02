@@ -15,8 +15,8 @@ function Vue(options) {
 }
 
 initMixin(Vue)
-stateMixin(Vue)
-eventsMixin(Vue)
+stateMixin(Vue) //注册实例属性方法 $set $delete $watch $data $props等
+eventsMixin(Vue)//实例事件的注册$once $on $off $emit
 lifecycleMixin(Vue)
 renderMixin(Vue)
 
