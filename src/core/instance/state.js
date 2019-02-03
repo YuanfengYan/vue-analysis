@@ -360,10 +360,11 @@ export function stateMixin (Vue: Class<Component>) {
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
 
+  
   Vue.prototype.$watch = function (
-    expOrFn: string | Function,
-    cb: any,
-    options?: Object
+    expOrFn: string | Function, //表达式
+    cb: any,//回调
+    options?: Object //配置项
   ): Function {
     const vm: Component = this
     if (isPlainObject(cb)) {
@@ -372,7 +373,7 @@ export function stateMixin (Vue: Class<Component>) {
     options = options || {}
     options.user = true
     const watcher = new Watcher(vm, expOrFn, cb, options)
-    if (options.immediate) {
+    if (options.immediate) {//在选项参数中指定 immediate: true 将立即以表达式的当前值触发回调 //默认false 即不会在绑定的时候立即执行
       try {
         cb.call(vm, watcher.value)
       } catch (error) {

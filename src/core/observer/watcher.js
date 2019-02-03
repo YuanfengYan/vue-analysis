@@ -41,7 +41,6 @@ export default class Watcher {
   before: ?Function;
   getter: Function;
   value: any;
-  debugger
   constructor (
     vm: Component,
     expOrFn: string | Function,
@@ -53,8 +52,10 @@ export default class Watcher {
     if (isRenderWatcher) {
       vm._watcher = this
     }
+    // 当前Watcher添加到vue实例上
     vm._watchers.push(this)
     // options
+    // 参数配置 默认为false
     if (options) {
       this.deep = !!options.deep
       this.user = !!options.user
@@ -70,8 +71,10 @@ export default class Watcher {
     this.dirty = this.lazy // for lazy watchers
     this.deps = []
     this.newDeps = []
+    // 内容不可重复的数组对象
     this.depIds = new Set()
     this.newDepIds = new Set()
+    // 把函数变成字符串形式
     this.expression = process.env.NODE_ENV !== 'production'
       ? expOrFn.toString()
       : ''
@@ -90,6 +93,7 @@ export default class Watcher {
         )
       }
     }
+    // 不是懒加载类型调用get
     this.value = this.lazy
       ? undefined
       : this.get()
