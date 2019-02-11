@@ -105,7 +105,7 @@ export default class Watcher {
    */
   get () {
     // 放入 dep的 订阅者
-    debugger
+    // debugger
     pushTarget(this)
     let value
     const vm = this.vm

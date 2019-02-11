@@ -58,9 +58,9 @@ export function initGlobalAPI (Vue: GlobalAPI) {
 
   Vue.options = Object.create(null)
   console.log(ASSET_TYPES)
-  // 'component',
-  // 'directive',
-  // 'filter'
+  // 'components',
+  // 'directives',
+  // 'filters'
   console.log(Vue.options)
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
@@ -82,8 +82,8 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // Vue.extend的注册 
   initExtend(Vue)
   // 注册
-  // 'component',
-  // 'directive',
-  // 'filter'
+  // 'components',
+  // 'directives',
+  // 'filters'
   initAssetRegisters(Vue)
 }

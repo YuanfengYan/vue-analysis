@@ -13,7 +13,10 @@ export function initEvents (vm: Component) {
   vm._events = Object.create(null)//父组件绑定在当前组件上的事件。
   vm._hasHookEvent = false
   // init parent attached events
-  const listeners = vm.$options._parentListeners //_parentListeners 用来表示父组件绑定在当前组件上的事件 类似_events
+  const listeners = vm.$options._parentListeners //_parentListeners 用来表示父组件绑定在当前组件上的事件 类似_events 
+  // 在之后讲双向绑定和虚拟dom的时候再看
+
+  // debugger
   if (listeners) {
     updateComponentListeners(vm, listeners)
   }
@@ -23,10 +26,12 @@ let target: any
 
 function add (event, fn) {
   target.$on(event, fn)
+  // debugger
 }
 
 function remove (event, fn) {
   target.$off(event, fn)
+  // debugger
 }
 
 function createOnceHandler (event, fn) {
@@ -64,6 +69,7 @@ export function eventsMixin (Vue: Class<Component>) {
       // debugger
       /*这里在注册事件的时候标记bool值也就是个标志位来表明存在钩子，而不需要通过哈希表的方法来查找是否有钩子，这样做可以减少不必要的开销，优化性能。*/
       if (hookRE.test(event)) {
+        // debugger
         vm._hasHookEvent = true
       }
     }

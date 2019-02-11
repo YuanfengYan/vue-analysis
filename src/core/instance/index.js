@@ -17,7 +17,7 @@ function Vue(options) {
 initMixin(Vue)
 stateMixin(Vue) //注册实例属性方法 $set $delete $watch $data $props等
 eventsMixin(Vue)//实例事件的注册$once $on $off $emit
-lifecycleMixin(Vue)
-renderMixin(Vue)
+lifecycleMixin(Vue)//Vue 实例在这里第一次为实例设置了 $el 属性，在之后调用 mounted 钩子所绑定的函数。原型属性_update $forceUpdate $destroy
+renderMixin(Vue)// 注册实例原型属性方法 $nextTick _render
 
 export default Vue

@@ -67,6 +67,9 @@ new Vue({
     fn1:function(){
       console.log('fn1')
     },
+    fn2:function(){
+      console.log('fn2')
+    },
     fetchData: function () {
      console.log('this.currentBranch')
      console.log(this.currentBranch)

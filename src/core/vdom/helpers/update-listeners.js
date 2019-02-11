@@ -9,6 +9,7 @@ import {
   isPlainObject
 } from 'shared/util'
 
+//前面对不同事件修饰符在name上做了标记,如‘~’,现在需要把它们作为Boolean返回并从name去掉
 const normalizeEvent = cached((name: string): {
   name: string,
   once: boolean,
@@ -57,6 +58,7 @@ export function updateListeners (
   vm: Component
 ) {
   let name, def, cur, old, event
+  // debugger
   for (name in on) {
     def = cur = on[name]
     old = oldOn[name]

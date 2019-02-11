@@ -35,7 +35,8 @@
         <h1>my-test</h1>
         <input type="text" v-model="currentBranch">
         {{name}}
-        <component-a :name="name" :age="age" @change="fn1"></component-a>
+        <!-- v-on:click.native="fn1" -->
+        <component-a :name="name" @hook:created="fn2" :age="age" @click.native="fn1" @change="fn1"></component-a>
     </div>
     <script src="app.js"></script>
 </body>

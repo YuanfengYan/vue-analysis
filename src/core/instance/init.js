@@ -58,7 +58,7 @@ export function initMixin(Vue: Class < Component > ) {
         // expose real self
         // debugger
         vm._self = vm
-        initLifecycle(vm) //第三步：vm的生命周期相关变量初始化 --相关的属性
+        initLifecycle(vm) //第三步：vm的生命周期相关变量初始化 --相关的属性 $parent $root $children $refs _watcher _inactive _directInactive _isMounted _isDestroyed _isBeingDestroyed
         initEvents(vm) //第四步：vm的事件监听初始化
         initRender(vm) //第五步： render 初始化$scopedSlots $slots ._c $createElement $createElement $listeners 
         callHook(vm, 'beforeCreate') //执行钩子，hook:
@@ -77,6 +77,7 @@ export function initMixin(Vue: Class < Component > ) {
         if (vm.$options.el) {
             vm.$mount(vm.$options.el)
         }
+        debugger
     }
 }
 
