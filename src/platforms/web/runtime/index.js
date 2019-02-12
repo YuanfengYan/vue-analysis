@@ -40,6 +40,8 @@ Vue.prototype.$mount = function(
     hydrating ? : boolean
 ): Component {
     el = el && inBrowser ? query(el) : undefined
+ // 没有经过compileToFunctions这样的步骤，而是直接进行接下来 render --> VNode 的过程
+  // hydrating 是服务端渲染会用到的，此处我们姑且忽略
     return mountComponent(this, el, hydrating)
 }
 

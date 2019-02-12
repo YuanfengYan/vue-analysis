@@ -74,6 +74,7 @@ export function initMixin(Vue: Class < Component > ) {
             measure(`vue ${vm._name} init`, startTag, endTag)
         }
 
+        // web-runtime.js   web-runtime-with-compiler.js 
         if (vm.$options.el) {
             vm.$mount(vm.$options.el)
         }

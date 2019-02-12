@@ -144,6 +144,8 @@ export function mountComponent (
   el: ?Element,
   hydrating?: boolean
 ): Component {
+  debugger
+  // 在Vue实例对象上添加 $el 属性，指向挂载点元素
   vm.$el = el
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode
@@ -165,10 +167,12 @@ export function mountComponent (
       }
     }
   }
+  // 触发 beforeMount 生命周期钩子
   callHook(vm, 'beforeMount')
 
   let updateComponent
   /* istanbul ignore if */
+  debugger
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
     updateComponent = () => {
       const name = vm._name
@@ -182,11 +186,13 @@ export function mountComponent (
       measure(`vue ${name} render`, startTag, endTag)
 
       mark(startTag)
+      
       vm._update(vnode, hydrating)
       mark(endTag)
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    //
     updateComponent = () => {
       vm._update(vm._render(), hydrating)
     }
