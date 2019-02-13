@@ -41,14 +41,18 @@ export default class Watcher {
   before: ?Function;
   getter: Function;
   value: any;
+  // updateComponent = () => {
+  //   vm._update(vm._render(), hydrating)
+  // }
   constructor (
     vm: Component,
     expOrFn: string | Function,
     cb: Function,
     options?: ?Object,
-    isRenderWatcher?: boolean
+    isRenderWatcher?: boolean 
   ) {
     this.vm = vm
+    // 只是复制了一份用来在watcher第一次patch的时候判断一些东西
     if (isRenderWatcher) {
       vm._watcher = this
     }
@@ -80,8 +84,11 @@ export default class Watcher {
       : ''
     // parse expression for getter
     if (typeof expOrFn === 'function') {
+      console.log('this.id',this.id)
       this.getter = expOrFn
+      // debugger
     } else {
+      console.log('expOrFn',expOrFn)
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = noop
@@ -93,7 +100,8 @@ export default class Watcher {
         )
       }
     }
-    // 不是懒加载类型调用get
+    // 不是懒加载类型调用get 
+    // 在初始化监听计算属性时（computed），有用到  延迟调用
     this.value = this.lazy
       ? undefined
       : this.get()
@@ -175,11 +183,14 @@ export default class Watcher {
    */
   update () {    //watcher作为订阅者的update方法
     /* istanbul ignore else */
+    // debugger
     if (this.lazy) {
       this.dirty = true
     } else if (this.sync) {
+      // 同步则执行run直接渲染视图
       this.run()
     } else {
+      // 异步推送到观察者队列中，下一个tick时调用。
       queueWatcher(this)
     }
   }
@@ -189,7 +200,9 @@ export default class Watcher {
    * Will be called by the scheduler.
    */
   run () {
+    // console.log()
     if (this.active) {
+      console.log('get')
       const value = this.get()
       if (
         value !== this.value ||

@@ -144,7 +144,7 @@ export function mountComponent (
   el: ?Element,
   hydrating?: boolean
 ): Component {
-  debugger
+  // debugger
   // 在Vue实例对象上添加 $el 属性，指向挂载点元素
   vm.$el = el
   if (!vm.$options.render) {
@@ -172,7 +172,7 @@ export function mountComponent (
 
   let updateComponent
   /* istanbul ignore if */
-  debugger
+  // debugger
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
     updateComponent = () => {
       const name = vm._name
@@ -181,6 +181,7 @@ export function mountComponent (
       const endTag = `vue-perf-end:${id}`
 
       mark(startTag)
+      // 生成虚拟dom 
       const vnode = vm._render()
       mark(endTag)
       measure(`vue ${name} render`, startTag, endTag)
@@ -193,7 +194,10 @@ export function mountComponent (
     }
   } else {
     //
+    // const vnode = vm._render()
+    // console.log('vm._render()',vm._render())
     updateComponent = () => {
+      console.log('updateComponent')
       vm._update(vm._render(), hydrating)
     }
   }
@@ -201,6 +205,7 @@ export function mountComponent (
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
+  // debugger
   new Watcher(vm, updateComponent, noop, {
     before () {
       if (vm._isMounted && !vm._isDestroyed) {

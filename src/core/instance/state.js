@@ -179,7 +179,8 @@ export function getData (data: Function, vm: Component): any {
 }
 
 const computedWatcherOptions = { lazy: true }
-
+// vue对象初始化时会针对computed属性的所有key值分别new一个watcher对象
+// 但区别于watch 会添加一个{lazy:true}参数来延迟watcher.get方法的执行
 function initComputed (vm: Component, computed: Object) {
   // $flow-disable-line
   const watchers = vm._computedWatchers = Object.create(null)
@@ -210,6 +211,7 @@ function initComputed (vm: Component, computed: Object) {
     // component prototype. We only need to define computed properties defined
     // at instantiation here.
     if (!(key in vm)) {
+      // 将computed属性代理到vm上，通过vm[key]访问computed属性值
       defineComputed(vm, key, userDef)
     } else if (process.env.NODE_ENV !== 'production') {
       if (key in vm.$data) {
@@ -227,11 +229,14 @@ export function defineComputed (
   userDef: Object | Function
 ) {
   const shouldCache = !isServerRendering()
+  // userDef是function，getter设为userDef或userDef的值
   if (typeof userDef === 'function') {
+    //shouldCache是否缓存，这也是使用computed属性最重要的原因，computed值会被缓存起来，而不是每次重新执行函数生成
     sharedPropertyDefinition.get = shouldCache
       ? createComputedGetter(key)
       : createGetterInvoker(userDef)
     sharedPropertyDefinition.set = noop
+    //userDef是不是function，getter设为userDef.get,setter设为userDef.set
   } else {
     sharedPropertyDefinition.get = userDef.get
       ? shouldCache && userDef.cache !== false
@@ -249,19 +254,23 @@ export function defineComputed (
       )
     }
   }
+  //，将computed属性代理到vm上，通过vm[key]访问computed属性值
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
 function createComputedGetter (key) {
   return function computedGetter () {
+    //shouldCache = true时直接返回缓存值watcher.value
     const watcher = this._computedWatchers && this._computedWatchers[key]
     if (watcher) {
+      // //存在脏数据则重新计算watcher的值
       if (watcher.dirty) {
         watcher.evaluate()
       }
       if (Dep.target) {
         watcher.depend()
       }
+       //直接返回缓存中watcher的值
       return watcher.value
     }
   }

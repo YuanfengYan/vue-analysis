@@ -67,8 +67,11 @@ export function renderMixin (Vue: Class<Component>) {
 
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
+    // 解构出 $options 中的 render 函数
     const { render, _parentVnode } = vm.$options
 
+    // console.log('render',render.toString())
+    // console.log('render',vm.$createElement.toString())
     if (_parentVnode) {
       vm.$scopedSlots = _parentVnode.data.scopedSlots || emptyObject
     }
