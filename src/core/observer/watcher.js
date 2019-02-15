@@ -146,11 +146,14 @@ export default class Watcher {
    * 为此指令添加依赖项。
    */
   addDep (dep: Dep) {
+    console.log('dep-',dep.id)
     const id = dep.id
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
       if (!this.depIds.has(id)) {
+        console.log('depids',id)
+        console.log(dep)
         dep.addSub(this)
       }
     }

@@ -15,12 +15,14 @@ import VNode, { createEmptyVNode } from '../vdom/vnode'
 
 import { isUpdatingChildComponent } from './lifecycle'
 
+// initRender函数主要是为我们的组件实例，初始化一些渲染属性，比如$slots和$createElement等。
 export function initRender (vm: Component) {
   vm._vnode = null // the root of the child tree 子级的根节点
   vm._staticTrees = null // v-once cached trees 
   const options = vm.$options
   const parentVnode = vm.$vnode = options._parentVnode // the placeholder node in parent tree  在父级树上的提示节点？
   const renderContext = parentVnode && parentVnode.context
+  // 处理组件slot，返回slot插槽对象
   vm.$slots = resolveSlots(options._renderChildren, renderContext)
   vm.$scopedSlots = emptyObject
   // bind the createElement fn to this instance 绑定创建元素到这个实例
@@ -69,13 +71,13 @@ export function renderMixin (Vue: Class<Component>) {
     const vm: Component = this
     // 解构出 $options 中的 render 函数
     const { render, _parentVnode } = vm.$options
-
+    
     // console.log('render',render.toString())
     // console.log('render',vm.$createElement.toString())
     if (_parentVnode) {
       vm.$scopedSlots = _parentVnode.data.scopedSlots || emptyObject
     }
-
+console.log('render')
     // set parent vnode. this allows render functions to have access
     // to the data on the placeholder node.
     vm.$vnode = _parentVnode

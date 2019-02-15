@@ -13,9 +13,10 @@ export function initEvents (vm: Component) {
   vm._events = Object.create(null)//父组件绑定在当前组件上的事件。
   vm._hasHookEvent = false
   // init parent attached events
-  const listeners = vm.$options._parentListeners //_parentListeners 用来表示父组件绑定在当前组件上的事件 类似_events 
+  const listeners = vm.$options._parentListeners //_parentListeners 用来表示父组件绑定在当前组件上的事件 类似_events  
   // 在之后讲双向绑定和虚拟dom的时候再看
 
+  // 所以下面这段就是将父组件模板中注册的事件放到当前组件实例的listeners里面
   // debugger
   if (listeners) {
     updateComponentListeners(vm, listeners)

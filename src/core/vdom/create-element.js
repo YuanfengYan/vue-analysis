@@ -34,14 +34,15 @@ export function createElement (
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
   // 参数判断，不传data时,要把children,normalizationType参数往前移
-  if (Array.isArray(data) || isPrimitive(data)) {
+  if (Array.isArray(data) || isPrimitive(data)) { //stying number symbol boolean
     normalizationType = children
     children = data
     data = undefined
   }
   if (isTrue(alwaysNormalize)) {
-    normalizationType = ALWAYS_NORMALIZE
+    normalizationType = ALWAYS_NORMALIZE //2
   }
+  console.log(children)
   return _createElement(context, tag, data, children, normalizationType)
 }
 
@@ -52,6 +53,15 @@ export function _createElement (
   children?: any,
   normalizationType?: number
 ): VNode | Array<VNode> {
+  /**
+   * 如果存在data.__ob__，说明data是被Observer观察的数据
+   * 不能用作虚拟节点的data
+   * 需要抛出警告，并返回一个空节点
+   *
+   * 被监控的data不能被用作vnode渲染的数据的原因是：
+   * data在vnode渲染过程中可能会被改变，这样会触发监控，导致不符合预期的操作
+   */
+
   if (isDef(data) && isDef((data: any).__ob__)) {//判断是否是响应式的 
     process.env.NODE_ENV !== 'production' && warn(
       `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` + //避免将观察到的数据对象用作vnode数据
@@ -60,12 +70,13 @@ export function _createElement (
     )
     return createEmptyVNode()
   }
-  // object syntax in v-bind v-bind中的对象语法
+  // object syntax in v-bind v-bind中的对象语法 判断data.is是否存在 当通过 :is 动态设置组件时
   if (isDef(data) && isDef(data.is)) {
     tag = data.is
   }
+  // 没有tag就创建一个空节点，所有属性为初始值
   if (!tag) {
-    // in case of component :is set to falsy value 在组件的情况下：设置为假值
+    // in case of component :is set to falsy value
     return createEmptyVNode()
   }
   // warn against non-primitive key 警告非原始key
@@ -81,7 +92,7 @@ export function _createElement (
     }
   }
   // support single function children as default scoped slot
-  // 支持单个函数children作为默认的作用域槽----？
+  // 若children[0]是function，则认为是scope slot而不是children
   if (Array.isArray(children) &&
     typeof children[0] === 'function'
   ) {
@@ -89,11 +100,24 @@ export function _createElement (
     data.scopedSlots = { default: children[0] }
     children.length = 0
   }
-  if (normalizationType === ALWAYS_NORMALIZE) {
+  // debugger
+  // 序列化children
+  debugger
+  if (normalizationType === ALWAYS_NORMALIZE) { //2 
+    // 处理children类数组
+    /**
+    *1 、一个场景是 render 函数是用户手写的，当 children 只有一个节点的时候，Vue.js 从接口层面允许用户把 
+    *  children 写成基础类型用来创建单个简单的文本节点，这种情况会调用 createTextVNode 创建一个文本节点的VNode；
+    *2 、另一个场景是当编译 slot、v-for 的时候会产生嵌套数组的情况，会调用 normalizeArrayChildren 方法，
+    */
     children = normalizeChildren(children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {
+    // 将children类数组的第一层转换为一个一维数组 --针对functional component 函数式组件返回的是一个数组而不是一个根节点，
+    // 所以simpleNormalizeChildren会通过 Array.prototype.concat 方法把整个 children 数组打平，让它的深度只有一层。
     children = simpleNormalizeChildren(children)
   }
+  console.log('children',children)
+  // 根据不同的情况创建不同类型的VNode实例并返回
   let vnode, ns
   if (typeof tag === 'string') {
     let Ctor

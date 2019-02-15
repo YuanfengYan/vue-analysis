@@ -28,6 +28,7 @@ export function initMixin(Vue: Class < Component > ) {
         }
 
         // a flag to avoid this being observed
+        // 如果是Vue的实例，则不需要被observe
         vm._isVue = true
         // debugger
             // merge options第一步： options参数的处理
@@ -64,7 +65,7 @@ export function initMixin(Vue: Class < Component > ) {
         callHook(vm, 'beforeCreate') //执行钩子，hook:
         initInjections(vm) // resolve injections before data/props provide / inject
         initState(vm) //第六步：vm的状态初始化，prop/data/computed/method/watch都在这里完成初始化
-        initProvide(vm) // resolve provide after data/props
+        initProvide(vm) // resolve provide after data/props //provide--->inject 两者可以在父组件与子组件、孙子组件、曾孙子...组件数据交互
         callHook(vm, 'created')
         // debugger
         /* istanbul ignore if */
@@ -74,7 +75,7 @@ export function initMixin(Vue: Class < Component > ) {
             measure(`vue ${vm._name} init`, startTag, endTag)
         }
 
-        // web-runtime.js   web-runtime-with-compiler.js 
+        // web-runtime.js   web-runtime-with-compiler.js  render 和 $mount
         if (vm.$options.el) {
             vm.$mount(vm.$options.el)
         }

@@ -195,7 +195,7 @@ export function mountComponent (
   } else {
     //
     // const vnode = vm._render()
-    // console.log('vm._render()',vm._render())
+    console.log('vm._render()',vm._render())
     updateComponent = () => {
       console.log('updateComponent')
       vm._update(vm._render(), hydrating)
@@ -331,6 +331,7 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
   }
 }
 
+// 触发之前我们options中定义的相应的生命周期函数
 export function callHook (vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
   // debugger
