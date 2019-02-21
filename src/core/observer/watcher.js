@@ -84,11 +84,11 @@ export default class Watcher {
       : ''
     // parse expression for getter
     if (typeof expOrFn === 'function') {
-      console.log('this.id',this.id)
+      // console.log('this.id',this.id)
       this.getter = expOrFn
       // debugger
     } else {
-      console.log('expOrFn',expOrFn)
+      // console.log('expOrFn',expOrFn)
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = noop
@@ -146,14 +146,14 @@ export default class Watcher {
    * 为此指令添加依赖项。
    */
   addDep (dep: Dep) {
-    console.log('dep-',dep.id)
+    // console.log('dep-',dep.id)
     const id = dep.id
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
       if (!this.depIds.has(id)) {
-        console.log('depids',id)
-        console.log(dep)
+        // console.log('depids',id)
+        // console.log(dep)
         dep.addSub(this)
       }
     }

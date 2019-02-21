@@ -211,7 +211,7 @@ export function defineReactive (
  * 在对象上设置属性  添加新属性并在属性尚不存在时触发更改通知。
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
-  console.log('this.$set')
+  // console.log('this.$set')
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {

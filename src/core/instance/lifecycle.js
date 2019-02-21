@@ -195,9 +195,9 @@ export function mountComponent (
   } else {
     //
     // const vnode = vm._render()
-    console.log('vm._render()',vm._render())
+    // console.log('vm._render()',vm._render())
     updateComponent = () => {
-      console.log('updateComponent')
+      // console.log('updateComponent')
       vm._update(vm._render(), hydrating)
     }
   }
@@ -338,7 +338,7 @@ export function callHook (vm: Component, hook: string) {
   // console.log(hook,'--0---')
   // 在调用生命周期钩子时禁用dep集合
   pushTarget()
-  console.log(vm)
+  // console.log(vm)
   const handlers = vm.$options[hook]
   if (handlers) {
     for (let i = 0, j = handlers.length; i < j; i++) {

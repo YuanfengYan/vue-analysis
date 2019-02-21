@@ -42,7 +42,7 @@ export function createElement (
   if (isTrue(alwaysNormalize)) {
     normalizationType = ALWAYS_NORMALIZE //2
   }
-  console.log(children)
+  // console.log(children)
   return _createElement(context, tag, data, children, normalizationType)
 }
 
@@ -102,7 +102,6 @@ export function _createElement (
   }
   // debugger
   // 序列化children
-  debugger
   if (normalizationType === ALWAYS_NORMALIZE) { //2 
     // 处理children类数组
     /**
@@ -116,7 +115,7 @@ export function _createElement (
     // 所以simpleNormalizeChildren会通过 Array.prototype.concat 方法把整个 children 数组打平，让它的深度只有一层。
     children = simpleNormalizeChildren(children)
   }
-  console.log('children',children)
+  // console.log('children',children)
   // 根据不同的情况创建不同类型的VNode实例并返回
   let vnode, ns
   if (typeof tag === 'string') {

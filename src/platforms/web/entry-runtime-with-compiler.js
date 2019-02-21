@@ -50,6 +50,7 @@ Vue.prototype.$mount = function(
     // 如果我们没有写 render 选项，那么就尝试将 template 或者 el 转化为 render 函数
     // resolve template/el and convert to render function
     if (!options.render) {
+        // console.log('bug')
         let template = options.template
         if (template) {
             if (typeof template === 'string') {

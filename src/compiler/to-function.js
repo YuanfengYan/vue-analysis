@@ -25,6 +25,7 @@ export function createCompileToFunctionFn (compile: Function): Function {
     options?: CompilerOptions,
     vm?: Component
   ): CompiledFunctionResult {
+    // debugger
     options = extend({}, options)
     const warn = options.warn || baseWarn
     delete options.warn

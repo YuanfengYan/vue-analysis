@@ -3,13 +3,24 @@
 import { extend } from 'shared/util'
 import { detectErrors } from './error-detector'
 import { createCompileToFunctionFn } from './to-function'
-
+// render, staticRenderFns
 export function createCompilerCreator (baseCompile: Function): Function {
+  // expectHTML: true,
+  // modules,
+  // directives,
+  // isPreTag,
+  // isUnaryTag,
+  // mustUseProp,
+  // canBeLeftOpenTag,
+  // isReservedTag,
+  // getTagNamespace,
+  // staticKeys: genStaticKeys(modules)
   return function createCompiler (baseOptions: CompilerOptions) {
     function compile (
       template: string,
       options?: CompilerOptions
     ): CompiledResult {
+      debugger
       const finalOptions = Object.create(baseOptions)
       const errors = []
       const tips = []
@@ -37,8 +48,11 @@ export function createCompilerCreator (baseCompile: Function): Function {
           }
         }
       }
+      // console.log('finalOptions',finalOptions)
 
       const compiled = baseCompile(template, finalOptions)
+
+      // console.log(compiled)
       if (process.env.NODE_ENV !== 'production') {
         errors.push.apply(errors, detectErrors(compiled.ast))
       }

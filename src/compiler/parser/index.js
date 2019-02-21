@@ -65,6 +65,7 @@ export function parse (
   template: string,
   options: CompilerOptions
 ): ASTElement | void {
+  // 定义了各种参数和方法
   warn = options.warn || baseWarn
 
   platformIsPreTag = options.isPreTag || no
@@ -77,10 +78,10 @@ export function parse (
 
   delimiters = options.delimiters
 
-  const stack = []
+  const stack = [] //插入栈
   const preserveWhitespace = options.preserveWhitespace !== false
-  let root
-  let currentParent
+  let root //最终生成的AST对象
+  let currentParent//当前父节点
   let inVPre = false
   let inPre = false
   let warned = false
@@ -117,6 +118,7 @@ export function parse (
     start (tag, attrs, unary) {
       // check namespace.
       // inherit parent ns if there is one
+      debugger
       const ns = (currentParent && currentParent.ns) || platformGetTagNamespace(tag)
 
       // handle IE svg bug
@@ -279,6 +281,7 @@ export function parse (
         }
       }
     },
+
     comment (text: string) {
       currentParent.children.push({
         type: 3,
@@ -287,6 +290,7 @@ export function parse (
       })
     }
   })
+  
   return root
 }
 
