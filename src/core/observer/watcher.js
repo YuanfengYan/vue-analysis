@@ -11,7 +11,7 @@ import {
 } from '../util/index'
 
 import { traverse } from './traverse'
-import { queueWatcher } from './scheduler'
+import { queueWatcher } from './scheduler'//调度
 import Dep, { pushTarget, popTarget } from './dep'
 
 import type { SimpleSet } from '../util/index'
@@ -205,7 +205,6 @@ export default class Watcher {
   run () {
     // console.log()
     if (this.active) {
-      console.log('get')
       const value = this.get()
       if (
         value !== this.value ||

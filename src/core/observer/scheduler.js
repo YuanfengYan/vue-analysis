@@ -58,6 +58,7 @@ function flushSchedulerQueue () {
     }
     id = watcher.id
     has[id] = null
+    //执行cb\render\computer
     watcher.run()
     // in dev build, check and stop circular updates.
     if (process.env.NODE_ENV !== 'production' && has[id] != null) {
@@ -132,7 +133,7 @@ export function queueWatcher (watcher: Watcher) {
   // 获取watcher的id
   const id = watcher.id
   // 检验id是否存在，已经存在则直接跳过，不存在则标记哈希表has，用于下次检验
-  console.log('has',has)
+  // console.log('has',has)
   if (has[id] == null) {
     has[id] = true
     if (!flushing) {

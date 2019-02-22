@@ -77,7 +77,7 @@ export function renderMixin (Vue: Class<Component>) {
     if (_parentVnode) {
       vm.$scopedSlots = _parentVnode.data.scopedSlots || emptyObject
     }
-console.log('render')
+// console.log('render')
     // set parent vnode. this allows render functions to have access
     // to the data on the placeholder node.
     vm.$vnode = _parentVnode
