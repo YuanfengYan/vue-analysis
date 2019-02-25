@@ -47,6 +47,10 @@ function flushSchedulerQueue () {
   //    user watchers are created before the render watcher)
   // 3. If a component is destroyed during a parent component's watcher run,
   //    its watchers can be skipped.
+  // 给queue排序，这样做可以保证：
+    // 1.组件更新的顺序是从父组件到子组件的顺序，因为父组件总是比子组件先创建。
+    // 2.一个组件的user watchers比render watcher先运行，因为user watchers往往比render watcher更早创建
+    // 3.如果一个组件在父组件watcher运行期间被销毁，它的watcher执行将被跳过。
   queue.sort((a, b) => a.id - b.id)
 
   // do not cache length because more watchers might be pushed
@@ -78,13 +82,17 @@ function flushSchedulerQueue () {
   }
 
   // keep copies of post queues before resetting state
+   /*得到队列的拷贝*/
   const activatedQueue = activatedChildren.slice()
   const updatedQueue = queue.slice()
 
+  // *重置调度者的状态*
   resetSchedulerState()
 
   // call component updated and activated hooks
+  /*使子组件状态都改编成active同时调用activated钩子*/
   callActivatedHooks(activatedQueue)
+  /*调用updated钩子*/
   callUpdatedHooks(updatedQueue)
 
   // devtool hook
@@ -94,6 +102,7 @@ function flushSchedulerQueue () {
   }
 }
 
+/*调用updated钩子*/
 function callUpdatedHooks (queue) {
   let i = queue.length
   while (i--) {
@@ -109,6 +118,8 @@ function callUpdatedHooks (queue) {
  * Queue a kept-alive component that was activated during patch.
  * The queue will be processed after the entire tree has been patched.
  */
+// 在patch期间被激活（activated）的keep-alive组件保存在队列中，
+  // 是到patch结束以后该队列会被处理
 export function queueActivatedComponent (vm: Component) {
   // setting _inactive to false here so that a render function can
   // rely on checking whether it's in an inactive tree (e.g. router-view)
@@ -116,6 +127,7 @@ export function queueActivatedComponent (vm: Component) {
   activatedChildren.push(vm)
 }
 
+/*使子组件状态都改编成active同时调用activated钩子*/
 function callActivatedHooks (queue) {
   for (let i = 0; i < queue.length; i++) {
     queue[i]._inactive = true
@@ -149,6 +161,7 @@ export function queueWatcher (watcher: Watcher) {
       queue.splice(i + 1, 0, watcher)
     }
     // queue the flush
+    // 关于waiting变量，这是很重要的一个标志位，它保证flushSchedulerQueue回调只允许被置入callbacks一次。
     if (!waiting) {
       waiting = true
 

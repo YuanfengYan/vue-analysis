@@ -154,11 +154,15 @@ export function nextTick (cb?: Function, ctx?: Object) {
       _resolve(ctx)
     }
   })
+  console.log('callbacks',callbacks.length)
+  // 是否有任务在执行，pending 会在任务执行完更改状态false
   if (!pending) {
     pending = true
     if (useMacroTask) {
+      //在Vue执行绑定的DOM事件，导致dom更新的任务，会被推入宏任务列表。例：v-on的一些事件绑定
       macroTimerFunc()
     } else {
+      // 微任务
       microTimerFunc()
     }
   }

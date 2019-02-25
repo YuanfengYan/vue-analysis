@@ -48,6 +48,8 @@ new Vue({
     currentBranch:1,
     name:'demo',
     age:'age1',
+    isShow:true,
+    arr:[{name:'jack'},{name:'peter'}],
   },
   beforeCreate:function(){
     console.log(this.age)
@@ -71,6 +73,15 @@ new Vue({
       console.log('fn2')
     },
     fetchData: function () {
+      Vue.nextTick( function(){
+        console.log('vue.nextTick')
+      })
+      Vue.nextTick( function(){
+        console.log('vue.nextTick')
+      })
+      Vue.nextTick( function(){
+        console.log('vue.nextTick')
+      })
      console.log('this.currentBranch')
      console.log(this.currentBranch)
     }
