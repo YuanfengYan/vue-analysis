@@ -38,7 +38,8 @@
             </div>
         </div>
         <h1>my-test</h1>
-        <input type="text" v-model="currentBranch">
+        <input type="email" value="2015sss@163.com"/>
+        <input v-focus type="text" v-model="currentBranch">
         {{name}}
         <!-- v-on:click.native="fn1" -->
         <component-a :name="name" @hook:created="fn2" :age="age" @click.native="fn1" @change="fn1"></component-a>

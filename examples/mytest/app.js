@@ -65,6 +65,14 @@ new Vue({
       return v.replace(/T|Z/g, ' ')
     }
   },
+  directives: {
+    focus: {
+      // 指令的定义
+      inserted: function (el) {
+        el.focus()
+      }
+    }
+  },
   methods: {
     fn1:function(){
       console.log('fn1')
